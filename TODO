@@ -12,9 +12,10 @@ Features:
             ✔ Menu URL @done(19-08-17 13:52)
                 ✔ Clickable label 'hyperlink' @done(19-08-17 13:52)
             ✔ Deal Expiration (in hours, converted from expires_in) @done(19-08-17 20:11)
-            ☐ Amount claimed (claimed_count)
+            ✔ Amount claimed (claimed_count) @done(19-08-18 17:18)
             ✔ create refresh / close buttons @done(19-08-17 13:52)
             ✔ Create more info textbox for deal body @done(19-08-17 13:52)
+        ✔ Dynamic label text for Deal Selector listbox @done(19-08-18 16:54)
         ☐ Create Region Selector
             ☐ download all regions from weedmaps
             ☐ create logic to pipe region into subregions download
@@ -36,3 +37,6 @@ Features:
         ☐ Use menuList to automatically populate a window with all menu items in a list box
         ☐ when a menu item is selected, populate surrounding labels / text boxes with item / price information
     
+    Spreadsheet Export / Simplified Shopping:
+        ☐ Download ALL menu data from ALL dispensaries
+        ☐ Parse all menu items into spreadsheet for easy price matching

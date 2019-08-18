@@ -11,7 +11,7 @@ dealTitleList = []
 dealBodyList = []
 dealExpirationList = []
 subregionList = []
-
+claimedCountList = []
 # Define Functions
 def determineDealExpiration(seconds):
     # Change expiration(seconds) to expiration(hours)
@@ -49,6 +49,7 @@ def parseDeals(deals):
     del dealTitleList[:]
     del dealBodyList[:]
     del dealExpirationList[0:]
+    del claimedCountList[:]
 
     # Initiate Loop for adding all data to Deals Selection ListBox
     while True:
@@ -57,6 +58,7 @@ def parseDeals(deals):
         # break loop if last dispensary has been reached. (note: the max count, when defined, always returns +1 more than there actually are in the listings. so even though it may seem like it, there will not be any missed dispensary in the listing.)
         if currentCount == dealCount:
             break
+
         # Define Data, and append that data to its list
         ## Dispensary Name
         dispoName = deals["data"]["deals"][currentCount]["listing"]["name"]
@@ -78,6 +80,8 @@ def parseDeals(deals):
         dealBody = deals["data"]["deals"][currentCount]["body"]
         dealBodyList.append(dealBody)
         
+        dealClaimedCount = deals["data"]["deals"][currentCount]["claimed_count"]
+        claimedCountList.append(dealClaimedCount)
         # Deal Expiration
         ## Save deal expiration (defined in seconds by weedmaps)
         dealExpirationSeconds = deals["data"]["deals"][currentCount]["expires_in"]
@@ -92,35 +96,59 @@ def parseDeals(deals):
         dealList.insert(END, dealTitle.encode())
 
 def refreshDetails(self):
-    # Define dealListSelection as the currently highlighted deal in the Deal Selection ListBox
-    dealListSelection = dealList.curselection()[0]
-    
-    # Clear all entry boxes
-    dispoNameEntryBox.delete(0, END)
-    dispoCityEntryBox.delete(0,END)
-    dispoURLEntryBox.delete(0,END)
-    dealExpirationEntryBox.delete(0,END)
-    dispoBodyTextBox.delete(1.0,END)
-    
-    # Insert each entrybox data entry from their respective lists using dealListSelection as the index for the lists
-    dispoNameEntryBox.insert(END, dispoNameList[dealListSelection])
-    dispoCityEntryBox.insert(END, dispoCityList[dealListSelection])
-    dispoURLEntryBox.insert(END, dispoMenuURLList[dealListSelection])
-    dealExpirationEntryBox.insert(END, dealExpirationList[dealListSelection])
-    dispoBodyTextBox.insert(INSERT, dealBodyList[dealListSelection])
+    try:
+        # Define dealListSelection as the currently highlighted deal in the Deal Selection ListBox
+        dealListSelection = dealList.curselection()[0]
+        
+        # Clear all entry boxes
+        dispoNameEntryBox.delete(0, END)
+        dispoCityEntryBox.delete(0,END)
+        dispoURLEntryBox.delete(0,END)
+        dealExpirationEntryBox.delete(0,END)
+        dispoBodyTextBox.delete(1.0,END)
+        
+        # Insert each entrybox data entry from their respective lists using dealListSelection as the index for the lists
+        dispoNameEntryBox.insert(END, dispoNameList[dealListSelection])
+        dispoCityEntryBox.insert(END, dispoCityList[dealListSelection])
+        dispoURLEntryBox.insert(END, dispoMenuURLList[dealListSelection])
+        dealExpirationEntryBox.insert(END, dealExpirationList[dealListSelection])
+        dispoBodyTextBox.insert(INSERT, dealBodyList[dealListSelection])
+        claimedCountLabelText = 'Claimed: ' + str(claimedCountList[dealListSelection])
+        claimedCountLabel.configure(text=claimedCountLabelText)
+
+    # Index error is due to the click binding on listboxes executing both listbox functions. with IndexError check, it will not damage any presented data.
+    except IndexError:
+        print("refreshDetails(): IndexError")
 
 def refreshsubregionDeals(self):
-    # Define subregionListSelection as currently highlighted selection in the subregion Selection ListBox
-    subregionListSelection = subregionListBox.curselection()[0]
+    try:
+        # Define subregionListSelection as currently highlighted selection in the subregion Selection ListBox
+        subregionListSelection = subregionListBox.curselection()[0]
 
-    # Define selectedSubregionID from subregionList using subregionListSelection as index, using the subregion ID downloaded from weedmaps.com
-    selectedSubregionID = subregionList[subregionListSelection]['id']
+        # Delete all data from presented data
+        dispoNameEntryBox.delete(0, END)
+        dispoCityEntryBox.delete(0,END)
+        dispoURLEntryBox.delete(0,END)
+        dealExpirationEntryBox.delete(0,END)
+        dispoBodyTextBox.delete(1.0,END)
+        claimedCountLabel.configure(text='')
 
-    # Download deals using subregion ID with Function
-    downloadDeals(selectedSubregionID)
+        # Define selectedSubregionID from subregionList using subregionListSelection as index, using the subregion ID downloaded from weedmaps.com
+        selectedSubregionID = subregionList[subregionListSelection]['id']
+        selectedSubregionName = subregionList[subregionListSelection]['name']
+        labelText = selectedSubregionName + ' Deals:'
+        dealListLabel.configure(text=labelText)
+
+        # Download deals using subregion ID with Function
+        downloadDeals(selectedSubregionID)
+
+    # Index error is due to the click binding on listboxes executing both listbox functions. with IndexError check, it will not damage any presented data.
+    except IndexError:
+        print("refreshsubregionDeals(): IndexError")
 
 def openMenuURL():
     # Use dispoURLEntryBox to open URL
+    print(dispoURLEntryBox.get)
     webbrowser.open_new(dispoURLEntryBox.get())
 
 def refreshSubregions():
@@ -169,10 +197,10 @@ def refreshSubregions():
 # Create Windows
 mainWindow = Tk()
 mainWindow.title("Snooper - Now with 75% less weedmaps!")
-mainWindow.geometry("850x450")
+mainWindow.geometry("850x410")
 mainWindow.resizeable=(0,0)
 
-# Create Frames
+# Create Frames (TODO: Needs Cleanup)
 topFrame = Frame(mainWindow)
 topFrame.pack(side=TOP)
 
@@ -203,11 +231,11 @@ dealListLabel.grid(row=0,column=3, sticky=W, padx=10)
 
 # Dispensary Name Label
 dispoNameLabel = Label(rightFrame, text='Dispensary:')
-dispoNameLabel.grid(row=0, column=0)
+dispoNameLabel.grid(row=0, column=0, sticky=W)
 
 # Dispensary City Label
 dispoCityLabel = Label(rightFrame, text='City:')
-dispoCityLabel.grid(row=1, column=0)
+dispoCityLabel.grid(row=1, column=0, sticky=W)
 
 # Dispensary Menu Label
 dispoURLLabel = Label(rightFrame, text='Click for Menu:')
@@ -215,7 +243,11 @@ dispoURLLabel.grid(row=2, column=0)
 
 # Deal Expiration Label
 dealExpirationLabel = Label(rightFrame, text='Expires in (Hours):')
-dealExpirationLabel.grid(row=3,column=0)
+dealExpirationLabel.grid(row=3,column=0, sticky=W)
+
+# Claimed Count Label:
+claimedCountLabel = Label(rightFrame, text='')
+claimedCountLabel.grid(row=4, column=0, sticky=W)
 
 # Deal Body Label
 dealBodyLabel = Label(bottomleftFrame, text='More Info:')
@@ -241,7 +273,7 @@ dealExpirationEntryBox = Entry(rightFrame)
 dealExpirationEntryBox.grid(row=3, column=1)
 
 # Create Text Box (for deal body details)
-dispoBodyTextBox = Text(bottomleftFrame, height=10, width=75)
+dispoBodyTextBox = Text(bottomleftFrame, height=10, width=75, wrap=WORD)
 dispoBodyTextBox.grid(row=1,column=0,padx=10, pady=10, sticky=NW)
 
 # Create buttons
