@@ -168,7 +168,7 @@ def refreshSubregions():
 
 # Create Windows
 mainWindow = Tk()
-mainWindow.title("OK Deals - Now with 75% less weedmaps!")
+mainWindow.title("Snooper - Now with 75% less weedmaps!")
 mainWindow.geometry("850x450")
 mainWindow.resizeable=(0,0)
 
