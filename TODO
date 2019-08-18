@@ -32,7 +32,7 @@ Features:
         
         ☐ Create new 'Menus' window
         ☐ Create listbox to select a region
-        ☐ create logic to replace region listbox with dispensary listbox
+        ☐ create logic to swap windows
         ☐ Create new '#dispensary Menu' window
         ☐ Use menuList to automatically populate a window with all menu items in a list box
         ☐ when a menu item is selected, populate surrounding labels / text boxes with item / price information
