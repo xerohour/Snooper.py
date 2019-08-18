@@ -1,0 +1,38 @@
+
+Optimization:
+    ☐ Replace all dispensary data lists with a single, nested list.
+    ☐ Clean tkinter Frames
+        ☐ redefine frame names to a more proper description
+Features:
+    ✔ Create Deals Window @done(19-08-17 13:52)
+        ✔ Create Layout for window @done(19-08-17 13:52)
+        ✔ Add dispensary information (labels / entryBoxes @done(19-08-17 13:52)
+            ✔ Dispensary Name @done(19-08-17 13:52)
+            ✔ Dispensary City @done(19-08-17 13:52)
+            ✔ Menu URL @done(19-08-17 13:52)
+                ✔ Clickable label 'hyperlink' @done(19-08-17 13:52)
+            ✔ Deal Expiration (in hours, converted from expires_in) @done(19-08-17 20:11)
+            ☐ Amount claimed (claimed_count)
+            ✔ create refresh / close buttons @done(19-08-17 13:52)
+            ✔ Create more info textbox for deal body @done(19-08-17 13:52)
+        ☐ Create Region Selector
+            ☐ download all regions from weedmaps
+            ☐ create logic to pipe region into subregions download
+            ☐ update subregion Selector once region is selected
+        ✔ Create Subregion Selector @done(19-08-17 17:13)
+            ✔ update deals page once subregion is selected @done(19-08-17 17:13)
+    ☐ Implement Main Splash Screen
+        ☐ Create Splash Screen
+        ☐ Implement Main Menu in Splash Screen
+
+    Dispensary Menu:
+        ☐ download / parse menu data from selected dispensary, save it to nested list.
+        ☐ automate download / parse function for all dispensarys in a given region. save all data to nested list
+        
+        ☐ Create new 'Menus' window
+        ☐ Create listbox to select a region
+        ☐ create logic to replace region listbox with dispensary listbox
+        ☐ Create new '#dispensary Menu' window
+        ☐ Use menuList to automatically populate a window with all menu items in a list box
+        ☐ when a menu item is selected, populate surrounding labels / text boxes with item / price information
+    
