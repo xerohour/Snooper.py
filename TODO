@@ -1,4 +1,6 @@
 
+FIXME:
+    [] inject headers into request to avoid security blockage
 Optimization:
     ☐ Replace all dispensary data lists with a single, nested list.
     ☐ Clean tkinter Frames
