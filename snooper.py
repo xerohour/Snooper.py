@@ -2,7 +2,9 @@ import requests
 import json
 from tkinter import *
 import webbrowser
-
+api__headers = {
+        'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36',
+    }
 # Define Lists
 dispoNameList = []
 dispoCityList = []
@@ -25,7 +27,7 @@ def downloadDeals(subregionID):
     url = 'https://api-g.weedmaps.com/discovery/v1/deals?filter%5Bregion_id%5D=' + str(subregionID) + '&filter%5Btypes%5D=organic&filter%5Bcategory%5D=all&page=1&page_size=150'
     
     # Download Data
-    r = requests.get(url)
+    r = requests.get(url, headers=api__headers)
     
     # save data as text
     deals = json.loads(r.text)
@@ -156,11 +158,13 @@ def refreshSubregions():
     subregionsURL = 'https://api-g.weedmaps.com/wm/v1/regions/oklahoma/subregions'
 
     # Download json data from subregions url
-    subregionsJSON = requests.get(subregionsURL)
+    subregionsJSON = requests.get(subregionsURL, headers=api__headers)
 
     # Parse / Load data into varaible as text string from json
-    subregions = json.loads(subregionsJSON.text)
-
+    try:
+        subregions = json.loads(subregionsJSON.text)
+    except json.decoder.JSONDecodeError:
+        print("Unable to decode JSON Data. Please contact the developer.")
     # Define subregionsCount as len of subregions element
     subregionsCount = len(subregions["data"]["subregions"])
 
