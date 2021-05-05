@@ -155,7 +155,7 @@ def openMenuURL():
 
 def refreshSubregions():
     # Define Subregions URL ()
-    subregionsURL = 'https://api-g.weedmaps.com/wm/v1/regions/oklahoma/subregions'
+    subregionsURL = 'https://api-g.weedmaps.com/wm/v1/regions/colorado/subregions'
 
     # Download json data from subregions url
     subregionsJSON = requests.get(subregionsURL, headers=api__headers)
